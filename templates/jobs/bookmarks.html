@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}My Bookmarks{% endblock %}
+{% block content %}
+<h2 class="mb-3">My Saved Jobs</h2>
+<div class="list-group">
+  {% for b in bookmarks %}
+    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" href="{% url 'job_detail' b.job.pk %}">
+      <div>
+        <div class="fw-semibold">{{ b.job.title }}</div>
+        <small class="text-muted">{{ b.job.company_name }} • {{ b.job.location }}</small>
+      </div>
+      <i class="bi bi-chevron-right"></i>
+    </a>
+  {% empty %}
+    <div class="alert alert-info">No saved jobs yet.</div>
+  {% endfor %}
+</div>
+{% endblock %}
+
+

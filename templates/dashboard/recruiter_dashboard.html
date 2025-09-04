@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Recruiter Dashboard{% endblock %}
+{% block content %}
+<div class="p-5 mb-4 bg-light rounded-3">
+  <div class="container-fluid py-5">
+    <h2 class="display-6 fw-bold">Recruiter Dashboard</h2>
+    <p class="col-md-8 fs-5">Post jobs, manage applications, and find the best talent.</p>
+    <a class="btn btn-primary btn-lg" href="{% url 'job_create' %}">Post a Job</a>
+    <a class="btn btn-outline-secondary btn-lg" href="{% url 'manage_applications' %}">Manage Applications</a>
+  </div>
+  </div>
+{% endblock %}

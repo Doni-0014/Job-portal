@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Top Matches{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-10">
+    <div class="card shadow-sm mb-3">
+      <div class="card-body">
+        <h3 class="mb-3">Top 5 Jobs For You</h3>
+        <form class="row g-2 align-items-center" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="col-md-5">
+            <label class="form-label">Upload Resume (PDF)</label>
+            <input class="form-control" type="file" name="resume" />
+          </div>
+          <div class="col-md-5">
+            <label class="form-label">Or enter skills</label>
+            <input class="form-control" type="text" name="skills" placeholder="e.g., Python, Django, SQL" />
+          </div>
+          <div class="col-md-2 d-grid">
+            <button class="btn btn-primary" type="submit">Get Recommendations</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="list-group">
+      {% for score, job, overlap in results %}
+      <a class="list-group-item list-group-item-action" href="{% url 'job_detail' job.pk %}">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">{{ job.title }}</h5>
+          <small class="text-muted">Match: {{ score }}/{{ overlap|length }}</small>
+        </div>
+        <p class="mb-1">{{ job.company_name }} • {{ job.location }}</p>
+        <small class="text-muted">Skill overlap: {{ overlap }}</small>
+      </a>
+      {% empty %}
+      <div class="alert alert-info">Submit a resume or skills to see recommendations.</div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+

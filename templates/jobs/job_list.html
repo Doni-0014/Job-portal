@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{# Fallback: using model helpers to avoid custom templatetag load issues #}
+{% block title %}Jobs{% endblock %}
+{% block content %}
+<div class="d-flex align-items-center justify-content-between mb-3">
+  <h2 class="mb-0">Browse Jobs</h2>
+  {% if user.is_authenticated and user.role == 'recruiter' %}
+    <a class="btn btn-primary" href="{% url 'job_create' %}"><i class="bi bi-plus-lg me-1"></i>Post Job</a>
+  {% endif %}
+</div>
+
+<form method="get" class="row g-2 mb-3">
+  <div class="col-md-4"><input class="form-control" type="text" name="q" placeholder="Search title or skills" value="{{ query }}" /></div>
+  <div class="col-md-3"><input class="form-control" type="text" name="location" placeholder="Location" value="{{ location }}" /></div>
+  <div class="col-md-2"><input class="form-control" type="number" name="min_salary" placeholder="Min Salary" value="{{ min_salary }}" /></div>
+  <div class="col-md-2"><input class="form-control" type="number" name="max_salary" placeholder="Max Salary" value="{{ max_salary }}" /></div>
+  <div class="col-md-1 d-grid gap-2 d-md-block">
+    <button class="btn btn-outline-primary" type="submit">Filter</button>
+    <a class="btn btn-link" href="{% url 'job_list' %}">Reset</a>
+  </div>
+</form>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+  {% for job in jobs %}
+  <div class="col">
+    <div class="card h-100 shadow-sm glass-card hover-lift">
+      <div class="card-body">
+        <h5 class="card-title"><a class="text-decoration-none" href="{% url 'job_detail' job.pk %}">{{ job.title }}</a></h5>
+        <h6 class="card-subtitle mb-2 text-muted">{{ job.company_name }}</h6>
+        <div class="mb-2 muted"><i class="bi bi-geo-alt"></i> {{ job.location }}</div>
+        <div class="mb-2 text-success"><i class="bi bi-cash-coin"></i> {{ job.get_salary_range }}</div>
+        <div class="mb-2">
+          {% for s in job.get_skill_list %}
+            <span class="chip">{{ s }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="card-footer bg-transparent border-0">
+        <a class="btn btn-sm btn-outline-primary" href="{% url 'job_detail' job.pk %}">View</a>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col"><div class="alert alert-info">No jobs found.</div></div>
+  {% endfor %}
+</div>
+{% endblock %}
+
+
