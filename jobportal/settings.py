@@ -23,6 +23,8 @@ if env_allowed_hosts:
 env_csrf = os.environ.get('CSRF_TRUSTED_ORIGINS')
 if env_csrf:
     CSRF_TRUSTED_ORIGINS = [o.strip() for o in env_csrf.split(',') if o.strip()]
+else:
+    CSRF_TRUSTED_ORIGINS = ['https://job-portal-4nx7.onrender.com']  # Your Render URL
 
 # Installed apps
 INSTALLED_APPS = [
