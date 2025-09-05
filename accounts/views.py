@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
+from django.contrib import messages
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
 
 def signup_view(request):
@@ -8,7 +9,12 @@ def signup_view(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('home')  # Change to your homepage URL name
+            messages.success(request, 'Account created successfully! Welcome!')
+            # Redirect based on role
+            if user.role == 'recruiter':
+                return redirect('recruiter_dashboard')
+            else:
+                return redirect('jobseeker_dashboard')
     else:
         form = CustomUserCreationForm()
     return render(request, 'signup.html', {'form': form})
